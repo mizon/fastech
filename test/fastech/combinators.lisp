@@ -1,7 +1,12 @@
 (defpackage :test.fastech.combinators
   (:use :cl
-        :cl-test-more
-        :fastech))
+        :cl-test-more)
+  (:import-from :fastech
+                :parse
+                :bind-parsers
+                :always
+                :not-followed-by
+                :parse-error))
 (in-package :test.fastech.combinators)
 
 (plan 3)
@@ -19,6 +24,8 @@
   (is-error (parse parser "foobar")
             parse-error
             "failes when the inner parser succeeds"))
+
+(diag "choice")
 
 (diag "many")
 
