@@ -5,7 +5,7 @@
         :fastech.string)
   (:export :parse
            :always
-           :fail
+           :unexpected
            :parse-error
            :parse-error-remainder
            :parse-error-message

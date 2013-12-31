@@ -7,8 +7,8 @@
 
 (plan 1)
 
-(diag "fail")
-(is-error (fastech:parse (fastech:fail "message") "foobar")
+(diag "unexpected")
+(is-error (fastech:parse (fastech:unexpected "message") "foobar")
           'parse-error
           "fails always")
 

@@ -2,7 +2,7 @@
   (:use :cl)
   (:export :parse
            :always
-           :fail
+           :unexpected
            :parse-error))
 (in-package :fastech.primitive)
 
@@ -14,7 +14,7 @@
     (declare (ignore ff))
     (funcall sf i p value)))
 
-(defun fail (message)
+(defun unexpected (message)
   (lambda (i p sf ff)
     (declare (ignore sf))
     (funcall ff i p message)))
