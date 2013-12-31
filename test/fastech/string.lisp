@@ -4,12 +4,15 @@
         :fastech))
 (in-package :test.fastech.string)
 
-(plan 3)
+(plan 4)
 
 (diag "str")
 (is (parse (str "foo") "foobar")
     (values "foo" "bar")
     "parses a string")
+(is-error (parse (str "foo") "barfoo")
+          'parse-error
+          "fails parsing invalid input")
 
 (diag "satisfy")
 (flet ((pred (char)
@@ -19,6 +22,6 @@
       "parses the satisfied char")
   (is-error (parse (satisfy #'pred) "bac")
             'parse-error
-            "failes parsing the satisfied char"))
+            "fails parsing the unsatisfied char"))
 
 (finalize)
