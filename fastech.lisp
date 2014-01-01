@@ -12,6 +12,10 @@
 
            :bind-parsers
            :not-followed-by
+           :choice
+           :optional
+           :many
+           :many1
 
            :str
            :satisfy))
