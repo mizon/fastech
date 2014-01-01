@@ -15,7 +15,7 @@
                 :many1))
 (in-package :test.fastech.combinators)
 
-(plan 11)
+(plan 13)
 
 (diag "bind-parsers")
 (is (parse (bind-parsers (always :foo)
@@ -66,7 +66,7 @@
     "parses many words")
 
 (diag "many1")
-(is-error (parses (many1 (str "foo")) "bar")
+(is-error (parse (many1 (str "foo")) "bar")
           'parse-error
           "fails with the invalid input")
 (is (parse (many1 (str "foo")) "foofoofoo")

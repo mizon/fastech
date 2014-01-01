@@ -35,15 +35,7 @@
   (or-parser parser (always nil)))
 
 (defun many (parser)
-  (labels ((many-p (i p sf ff vs)
-             (labels ((sf1 (i p v)
-                        (many-p i p sf ff (cons v vs)))
-                      (ff1 (i p msg)
-                        (declare (ignore msg))
-                        (funcall sf i p (reverse vs))))
-               (funcall parser i p #'sf1 #'ff1))))
-    (lambda (i p sf ff)
-      (many-p i p sf ff ()))))
+  (or-parser (many1 parser) (always ())))
 
 (defun many1 (parser)
   (bind-parsers
