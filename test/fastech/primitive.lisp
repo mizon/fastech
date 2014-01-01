@@ -5,6 +5,7 @@
                 :parse-error
                 :bind-parsers
                 :always
+                :map-parser
                 :try
                 :str
                 :parse-error-remainder)
@@ -13,7 +14,7 @@
                 :is-parse-error))
 (in-package :test.fastech.primitive)
 
-(plan 4)
+(plan 6)
 
 (diag "unexpected")
 (is-parse-error (fastech:unexpected "message") "foobar"
@@ -25,6 +26,14 @@
            "foobar"
            'bar "foobar"
            "binds two parsers")
+
+(diag "map-parser")
+(is-parsed (map-parser #'string-upcase (str "foo")) "foobar"
+           "FOO" "bar"
+           "applies a function to the result")
+(is-parse-error (map-parser #'identity (str "bar")) "foobar"
+                "foobar" "str"
+                "fails with invalid inputs ")
 
 (diag "try")
 (is-parse-error (bind-parsers

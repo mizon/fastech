@@ -4,6 +4,7 @@
            :always
            :unexpected
            :bind-parsers
+           :map-parser
            :try
            :parse-error
            :parse-error-remainder
@@ -27,6 +28,12 @@
   (lambda (i p sf ff)
     (labels ((sf1 (i p v)
                (funcall (funcall f v) i p sf ff)))
+      (funcall parser i p #'sf1 ff))))
+
+(defun map-parser (f parser)
+  (lambda (i p sf ff)
+    (flet ((sf1 (i p v)
+             (funcall sf i p (funcall f v))))
       (funcall parser i p #'sf1 ff))))
 
 (defun try (parser)
