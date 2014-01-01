@@ -1,10 +1,10 @@
-(defpackage :fastech.string
+(defpackage :fastech.char
   (:use :cl)
   (:import-from :fastech.combinators
                 :bind-parsers)
   (:export :str
            :satisfy))
-(in-package :fastech.string)
+(in-package :fastech.char)
 
 (defun str (string)
   (bind-parsers

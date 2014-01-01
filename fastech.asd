@@ -10,10 +10,10 @@
   :author "Keita Mizuochi <mizon9@gmail.com>"
   :components ((:file "fastech"
                 :depends-on ("fastech/primitive"
-                             "fastech/string"
+                             "fastech/char"
                              "fastech/combinators"))
                (:file "fastech/combinators")
-               (:file "fastech/string"
+               (:file "fastech/char"
                 :depends-on ("fastech/combinators"))
                (:file "fastech/primitive")))
 
@@ -23,7 +23,7 @@
   :author "Keita Mizuochi <mizon9@gmail.com>"
   :components ((:module "test"
                 :components ((:file "fastech/combinators")
-                             (:file "fastech/string")
+                             (:file "fastech/char")
                              (:file "fastech/primitive"))))
   :depends-on (:cl-test-more
                :fastech))

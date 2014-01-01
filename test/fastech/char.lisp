@@ -1,4 +1,4 @@
-(defpackage :test.fastech.string
+(defpackage :test.fastech.char
   (:use :cl
         :cl-test-more)
   (:import-from :fastech
@@ -6,7 +6,7 @@
                 :parse-error
                 :str
                 :satisfy))
-(in-package :test.fastech.string)
+(in-package :test.fastech.char)
 
 (plan 5)
 

@@ -2,7 +2,7 @@
   (:use :cl
         :fastech.primitive
         :fastech.combinators
-        :fastech.string)
+        :fastech.char)
   (:export :parse
            :always
            :unexpected
