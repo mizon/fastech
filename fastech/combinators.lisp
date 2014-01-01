@@ -7,7 +7,9 @@
            :choice
            :optional
            :many
-           :many1))
+           :many1
+           :*>
+           :<*))
 (in-package :fastech.combinators)
 
 (defun not-followed-by (parser)
@@ -46,3 +48,19 @@
              (declare (ignore msg))
              (funcall right i p sf ff)))
       (funcall left i p sf #'ff1))))
+
+(defun *> (parser &rest parsers)
+  (reduce (lambda (l r)
+            (bind-parsers
+             l
+             (lambda (v)
+               (declare (ignore v))
+               r)))
+          parsers
+          :initial-value parser))
+
+(defun <* (parser &rest parsers)
+  (bind-parsers
+   parser
+   (lambda (v)
+     (*> (apply #'*> parsers) (always v)))))

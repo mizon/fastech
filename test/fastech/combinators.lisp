@@ -11,13 +11,15 @@
                 :str
                 :unexpected
                 :many
-                :many1)
+                :many1
+                :*>
+                :<*)
   (:import-from :test.fastech.helper
                 :is-parsed
                 :is-parse-error))
 (in-package :test.fastech.combinators)
 
-(plan 12)
+(plan 14)
 
 (diag "always")
 (is-parsed (always :foo) "some string"
@@ -67,5 +69,15 @@
 (is-parsed (many1 (str "foo")) "foofoofoo"
            '("foo" "foo" "foo") ""
            "parses many words")
+
+(diag "*>")
+(is-parsed (*> (str "foo") (str "bar") (str "noo")) "foobarnoo"
+           "noo" ""
+           "keeps the last result")
+
+(diag "<*")
+(is-parsed (<* (str "foo") (str "bar") (str "noo")) "foobarnoo"
+           "foo" ""
+           "keeps the first result")
 
 (finalize)

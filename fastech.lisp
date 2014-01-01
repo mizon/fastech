@@ -17,6 +17,8 @@
            :optional
            :many
            :many1
+           :*>
+           :<*
 
            :chr
            :any-char
