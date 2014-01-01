@@ -1,20 +1,14 @@
 (defpackage :fastech.combinators
   (:use :cl)
   (:import-from :fastech.primitive
-                :always)
-  (:export :bind-parsers
-           :not-followed-by
+                :always
+                :bind-parsers)
+  (:export :not-followed-by
            :choice
            :optional
            :many
            :many1))
 (in-package :fastech.combinators)
-
-(defun bind-parsers (parser f)
-  (lambda (i p sf ff)
-    (labels ((sf1 (i p v)
-               (funcall (funcall f v) i p sf ff)))
-      (funcall parser i p #'sf1 ff))))
 
 (defun not-followed-by (parser)
   (lambda (i p sf ff)

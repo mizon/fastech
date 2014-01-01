@@ -3,7 +3,11 @@
   (:export :parse
            :always
            :unexpected
-           :parse-error))
+           :bind-parsers
+           :try
+           :parse-error
+           :parse-error-remainder
+           :parse-error-message))
 (in-package :fastech.primitive)
 
 (defun parse (parser input)
@@ -18,6 +22,19 @@
   (lambda (i p sf ff)
     (declare (ignore sf))
     (funcall ff i p message)))
+
+(defun bind-parsers (parser f)
+  (lambda (i p sf ff)
+    (labels ((sf1 (i p v)
+               (funcall (funcall f v) i p sf ff)))
+      (funcall parser i p #'sf1 ff))))
+
+(defun try (parser)
+  (lambda (i p sf ff)
+    (flet ((ff1 (i1 p1 message)
+             (declare (ignore i1 p1))
+             (funcall ff i p message)))
+      (funcall parser i p sf #'ff1))))
 
 ;; Default success function
 (defun success-fn (input pos value)

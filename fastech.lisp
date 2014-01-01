@@ -9,6 +9,7 @@
            :parse-error
            :parse-error-remainder
            :parse-error-message
+           :try
 
            :bind-parsers
            :not-followed-by

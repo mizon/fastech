@@ -1,6 +1,6 @@
 (defpackage :fastech.char
   (:use :cl)
-  (:import-from :fastech.combinators
+  (:import-from :fastech.primitive
                 :bind-parsers)
   (:export :chr
            :any-char
