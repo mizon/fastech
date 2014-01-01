@@ -23,10 +23,10 @@
           "fails parsing invalid input")
 
 (diag "any-char")
-(is-parsed any-char "foo"
+(is-parsed (any-char) "foo"
            #\f "oo"
            "parses an any char")
-(is-error (parse any-char "")
+(is-error (parse (any-char) "")
           'parse-error
           "fails parsing the empty input")
 

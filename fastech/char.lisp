@@ -17,6 +17,13 @@
           (funcall sf i (1+ p) (char i p))
           (funcall ff i p "chr"))))))
 
+(defun any-char ()
+  (bind-parsers
+   (ensure 1)
+   (constantly
+    (lambda (i p sf ff)
+      (funcall sf i (1+ p) (char i p))))))
+
 (defun str (string)
   (bind-parsers
    (ensure (length string))
@@ -40,10 +47,3 @@
     (if (< (- (length i) p) length)
         (funcall ff i p "ensure: end of input")
         (funcall sf i p nil))))
-
-(setf any-char
-      (bind-parsers
-       (ensure 1)
-       (constantly
-        (lambda (i p sf ff)
-          (funcall sf i (1+ p) (char i p))))))
