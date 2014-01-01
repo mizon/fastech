@@ -2,7 +2,9 @@
   (:use :cl
         :cl-test-more)
   (:import-from :fastech
-                :parse-error))
+                :parse-error)
+  (:import-from :test.fastech.helper
+                :is-parsed))
 (in-package :test.fastech.primitive)
 
 (plan 1)

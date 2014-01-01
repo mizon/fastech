@@ -17,6 +17,8 @@
            :many
            :many1
 
+           :chr
+           :any-char
            :str
            :satisfy))
 (in-package :fastech)

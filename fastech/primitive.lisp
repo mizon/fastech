@@ -19,8 +19,6 @@
     (declare (ignore sf))
     (funcall ff i p message)))
 
-(defun try (parser))
-
 ;; Default success function
 (defun success-fn (input pos value)
   (values value (subseq input pos)))
