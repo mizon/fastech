@@ -1,4 +1,4 @@
-(defpackage :test.fastech.char
+(defpackage :fastech.char-test
   (:use :cl
         :cl-test-more)
   (:import-from :fastech
@@ -8,9 +8,9 @@
                 :any-char
                 :str
                 :satisfy)
-  (:import-from :test.fastech.helper
+  (:import-from :fastech.test-helper
                 :is-parsed))
-(in-package :test.fastech.char)
+(in-package :fastech.char-test)
 
 (plan 9)
 

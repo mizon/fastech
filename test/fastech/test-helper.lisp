@@ -1,4 +1,4 @@
-(defpackage :test.fastech.helper
+(defpackage :fastech.test-helper
   (:use :cl)
   (:import-from :cl-test-more
                 :is
@@ -9,7 +9,7 @@
                 :parse-error-message)
   (:export :is-parsed
            :is-parse-error))
-(in-package :test.fastech.helper)
+(in-package :fastech.test-helper)
 
 (defun is-parsed (parser input expected-value expected-remainder message)
   (multiple-value-bind (value remainder)

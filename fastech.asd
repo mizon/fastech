@@ -21,13 +21,13 @@
   :license "BSD3"
   :version "0.1"
   :author "Keita Mizuochi <mizon9@gmail.com>"
-  :components ((:module "test"
-                :components ((:file "fastech/combinators"
-                              :depends-on ("fastech/helper"))
-                             (:file "fastech/char"
-                              :depends-on ("fastech/helper"))
-                             (:file "fastech/primitive"
-                              :depends-on ("fastech/helper"))
-                             (:file "fastech/helper"))))
+  :components ((:module "test/fastech"
+                :components ((:file "combinators-test"
+                              :depends-on ("test-helper"))
+                             (:file "char-test"
+                              :depends-on ("test-helper"))
+                             (:file "primitive-test"
+                              :depends-on ("test-helper"))
+                             (:file "test-helper"))))
   :depends-on (:cl-test-more
                :fastech))

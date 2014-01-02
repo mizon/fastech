@@ -1,4 +1,4 @@
-(defpackage :test.fastech.primitive
+(defpackage :fastech.primitive-test
   (:use :cl
         :cl-test-more)
   (:import-from :fastech
@@ -9,10 +9,10 @@
                 :try
                 :str
                 :parse-error-remainder)
-  (:import-from :test.fastech.helper
+  (:import-from :fastech.test-helper
                 :is-parsed
                 :is-parse-error))
-(in-package :test.fastech.primitive)
+(in-package :fastech.primitive-test)
 
 (plan 6)
 
