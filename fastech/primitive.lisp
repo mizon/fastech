@@ -12,17 +12,17 @@
 (in-package :fastech.primitive)
 
 (defun parse (parser input)
-  "Runs parser with input. Throws parse-error when parser fails."
+  "Runs `parser' with input. Throws `parse-error' when `parser' fails."
   (funcall parser input 0 #'success-fn #'failure-fn))
 
 (defun always (value)
-  "Succeeds always. value is this parser's result."
+  "Succeeds always. `value' is this parser's result."
   (lambda (i p sf ff)
     (declare (ignore ff))
     (funcall sf i p value)))
 
 (defun unexpected (message)
-  "Fails always. The parse error message is message."
+  "Fails always. The parse error message is `message'."
   (lambda (i p sf ff)
     (declare (ignore sf))
     (funcall ff i p message)))
@@ -34,14 +34,14 @@
       (funcall parser i p #'sf1 ff))))
 
 (defun map-parser (f parser)
-  "Applies f to parser's result and the result is this parser's result."
+  "Applies `f' to `parser''s result and the result is this parser's result."
   (lambda (i p sf ff)
     (flet ((sf1 (i p v)
              (funcall sf i p (funcall f v))))
       (funcall parser i p #'sf1 ff))))
 
 (defun try (parser)
-  "Applies parser. Resets the input position when parser fails."
+  "Applies `parser'. Resets the input position when `parser' fails."
   (lambda (i p sf ff)
     (flet ((ff1 (i1 p1 message)
              (declare (ignore i1 p1))
