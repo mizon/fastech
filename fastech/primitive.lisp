@@ -58,4 +58,5 @@
 
 (define-condition parse-error ()
   ((remainder :initarg :remainder :reader parse-error-remainder)
-   (message :initarg :message :reader parse-error-message)))
+   (message :initarg :message :reader parse-error-message))
+  (:documentation "A condition used when failed to parse."))
