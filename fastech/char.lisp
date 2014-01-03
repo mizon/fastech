@@ -9,6 +9,7 @@
 (in-package :fastech.char)
 
 (defun chr (char)
+  "Parses a character."
   (bind-parsers
    (ensure 1)
    (constantly
@@ -18,6 +19,7 @@
           (funcall ff i p "chr"))))))
 
 (defun any-char ()
+  "Parses an arbitrary character."
   (bind-parsers
    (ensure 1)
    (constantly
@@ -25,6 +27,7 @@
       (funcall sf i (1+ p) (char i p))))))
 
 (defun str (string)
+  "Parses a string."
   (bind-parsers
    (ensure (length string))
    (constantly
@@ -34,6 +37,7 @@
           (funcall ff i p "str"))))))
 
 (defun satisfy (pred)
+  "Parses a character if pred returns non-nil, pred takes a head character of the current input."
   (bind-parsers
    (ensure 1)
    (constantly
@@ -42,6 +46,7 @@
           (funcall sf i (1+ p) (aref i p))
           (funcall ff i p "satisfy"))))))
 
+;; Helper
 (defun ensure (length)
   (lambda (i p sf ff)
     (if (< (- (length i) p) length)
