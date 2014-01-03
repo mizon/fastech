@@ -51,11 +51,7 @@
 
 (defun *> (parser &rest parsers)
   (reduce (lambda (l r)
-            (bind-parsers
-             l
-             (lambda (v)
-               (declare (ignore v))
-               r)))
+            (bind-parsers l (constantly r)))
           parsers
           :initial-value parser))
 
