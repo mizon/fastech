@@ -33,7 +33,7 @@
            "applies a function to the result")
 (is-parse-error (map-result #'identity (str "bar")) "foobar"
                 "foobar" "str"
-                "fails with invalid inputs ")
+                "fails with invalid inputs")
 
 (diag "try")
 (is-parse-error (bind
