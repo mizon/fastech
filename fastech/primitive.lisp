@@ -4,7 +4,7 @@
            :always
            :unexpected
            :bind
-           :map-parser
+           :map-result
            :try
            :parse-error
            :parse-error-remainder
@@ -34,8 +34,8 @@
                (funcall (funcall f v) i p sf ff)))
       (funcall parser i p #'sf1 ff))))
 
-(defun map-parser (f parser)
-  "Applies `f' to `parser''s result and the result is this parser's result."
+(defun map-result (f parser)
+  "Applies `f' to the result of `parser'. The value `f' returns becomes the mapped parser's result."
   (lambda (i p sf ff)
     (flet ((sf1 (i p v)
              (funcall sf i p (funcall f v))))

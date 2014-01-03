@@ -5,7 +5,7 @@
                 :parse-error
                 :bind
                 :always
-                :map-parser
+                :map-result
                 :try
                 :str
                 :parse-error-remainder)
@@ -27,11 +27,11 @@
            'bar "foobar"
            "binds two parsers")
 
-(diag "map-parser")
-(is-parsed (map-parser #'string-upcase (str "foo")) "foobar"
+(diag "map-result")
+(is-parsed (map-result #'string-upcase (str "foo")) "foobar"
            "FOO" "bar"
            "applies a function to the result")
-(is-parse-error (map-parser #'identity (str "bar")) "foobar"
+(is-parse-error (map-result #'identity (str "bar")) "foobar"
                 "foobar" "str"
                 "fails with invalid inputs ")
 
