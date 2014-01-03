@@ -3,7 +3,7 @@
   (:export :parse
            :always
            :unexpected
-           :bind-parsers
+           :bind
            :map-parser
            :try
            :parse-error
@@ -27,7 +27,8 @@
     (declare (ignore sf))
     (funcall ff i p message)))
 
-(defun bind-parsers (parser f)
+(defun bind (parser f)
+  "Binds a parser which `f' returns to `parser'. `f' takes the result of `parser'."
   (lambda (i p sf ff)
     (labels ((sf1 (i p v)
                (funcall (funcall f v) i p sf ff)))

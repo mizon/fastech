@@ -1,7 +1,7 @@
 (defpackage :fastech.char
   (:use :cl)
   (:import-from :fastech.primitive
-                :bind-parsers)
+                :bind)
   (:export :chr
            :any-char
            :str
@@ -10,7 +10,7 @@
 
 (defun chr (char)
   "Parses a character."
-  (bind-parsers
+  (bind
    (ensure 1)
    (constantly
     (lambda (i p sf ff)
@@ -20,7 +20,7 @@
 
 (defun any-char ()
   "Parses an arbitrary character."
-  (bind-parsers
+  (bind
    (ensure 1)
    (constantly
     (lambda (i p sf ff)
@@ -28,7 +28,7 @@
 
 (defun str (string)
   "Parses a string."
-  (bind-parsers
+  (bind
    (ensure (length string))
    (constantly
     (lambda (i p sf ff)
@@ -38,7 +38,7 @@
 
 (defun satisfy (pred)
   "Parses a character if `pred' returns non-nil, pred takes a head character of the current input."
-  (bind-parsers
+  (bind
    (ensure 1)
    (constantly
     (lambda (i p sf ff)

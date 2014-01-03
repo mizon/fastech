@@ -2,7 +2,7 @@
   (:use :cl)
   (:import-from :fastech.primitive
                 :always
-                :bind-parsers)
+                :bind)
   (:export :not-followed-by
            :choice
            :optional
@@ -39,10 +39,10 @@
 
 (defun many1 (parser)
   "Applies `parser' many times as well as many but only succeeds when parser succeeds more once."
-  (bind-parsers
+  (bind
    parser
    (lambda (v)
-     (bind-parsers
+     (bind
       (many parser)
       (lambda (vs)
         (always (cons v vs)))))))
@@ -57,13 +57,13 @@
 (defun *> (parser &rest parsers)
   "Applies `parsers' in order and keeps the value of the last parser."
   (reduce (lambda (l r)
-            (bind-parsers l (constantly r)))
+            (bind l (constantly r)))
           parsers
           :initial-value parser))
 
 (defun <* (parser &rest parsers)
   "Applies `parsers' in order and keeps the value of the first parser."
-  (bind-parsers
+  (bind
    parser
    (lambda (v)
      (*> (apply #'*> parsers) (always v)))))

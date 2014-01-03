@@ -3,7 +3,7 @@
         :cl-test-more)
   (:import-from :fastech
                 :parse-error
-                :bind-parsers
+                :bind
                 :always
                 :map-parser
                 :try
@@ -21,8 +21,8 @@
                 "foobar" "message"
                 "fails always")
 
-(diag "bind-parsers")
-(is-parsed (bind-parsers (always 'foo) (constantly (always 'bar)))
+(diag "bind")
+(is-parsed (bind (always 'foo) (constantly (always 'bar)))
            "foobar"
            'bar "foobar"
            "binds two parsers")
@@ -36,14 +36,14 @@
                 "fails with invalid inputs ")
 
 (diag "try")
-(is-parse-error (bind-parsers
+(is-parse-error (bind
                  (str "foo")
                  (constantly (str "bar")))
                 "foofoo"
                 "foo" "str"
                 "parses a fragment")
 (is-parse-error (try
-                 (bind-parsers
+                 (bind
                   (str "foo")
                   (constantly (str "bar"))))
                 "foofoo"
