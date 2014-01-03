@@ -15,18 +15,21 @@
   "Runs `parser' with `input'. Throws `parse-failed' when `parser' fails."
   (funcall parser input 0 #'success-fn #'failure-fn))
 
+(declaim (inline always))
 (defun always (value)
   "Succeeds always. `value' is this parser's result."
   (lambda (i p sf ff)
     (declare (ignore ff))
     (funcall sf i p value)))
 
+(declaim (inline unexpected))
 (defun unexpected (message)
   "Fails always. The parse error message is `message'."
   (lambda (i p sf ff)
     (declare (ignore sf))
     (funcall ff i p message)))
 
+(declaim (inline bind))
 (defun bind (parser f)
   "Binds a parser which `f' returns to `parser'. `f' takes the result of `parser'."
   (lambda (i p sf ff)
@@ -34,6 +37,7 @@
                (funcall (funcall f v) i p sf ff)))
       (funcall parser i p #'sf1 ff))))
 
+(declaim (inline map-result))
 (defun map-result (f parser)
   "Applies `f' to the result of `parser'. The value `f' returns becomes the mapped parser's result."
   (lambda (i p sf ff)
@@ -41,6 +45,7 @@
              (funcall sf i p (funcall f v))))
       (funcall parser i p #'sf1 ff))))
 
+(declaim (inline try))
 (defun try (parser)
   "Applies `parser'. Resets the input position when `parser' fails."
   (lambda (i p sf ff)
