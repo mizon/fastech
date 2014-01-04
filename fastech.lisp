@@ -6,9 +6,9 @@
   (:export :parse
            :always
            :unexpected
-           :parse-error
-           :parse-error-remainder
-           :parse-error-message
+           :parse-failed
+           :parse-failed-remainder
+           :parse-failed-message
            :map-parser
            :try
 

@@ -12,7 +12,8 @@
                 :depends-on ("fastech/primitive"
                              "fastech/char"
                              "fastech/combinators"))
-               (:file "fastech/combinators")
+               (:file "fastech/combinators"
+                :depends-on ("fastech/primitive"))
                (:file "fastech/char"
                 :depends-on ("fastech/combinators"))
                (:file "fastech/primitive")))

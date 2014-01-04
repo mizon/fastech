@@ -6,13 +6,13 @@
            :bind
            :map-result
            :try
-           :parse-error
-           :parse-error-remainder
-           :parse-error-message))
+           :parse-failed
+           :parse-failed-remainder
+           :parse-failed-message))
 (in-package :fastech.primitive)
 
 (defun parse (parser input)
-  "Runs `parser' with `input'. Throws `parse-error' when `parser' fails."
+  "Runs `parser' with `input'. Throws `parse-failed' when `parser' fails."
   (funcall parser input 0 #'success-fn #'failure-fn))
 
 (defun always (value)
@@ -55,9 +55,9 @@
 
 ;; Default failure function
 (defun failure-fn (input pos message)
-  (error 'parse-error :remainder (subseq input pos) :message message))
+  (error 'parse-failed :remainder (subseq input pos) :message message))
 
-(define-condition parse-error ()
-  ((remainder :initarg :remainder :reader parse-error-remainder)
-   (message :initarg :message :reader parse-error-message))
+(define-condition parse-failed ()
+  ((remainder :initarg :remainder :reader parse-failed-remainder)
+   (message :initarg :message :reader parse-failed-message))
   (:documentation "A condition used when failed to parse."))

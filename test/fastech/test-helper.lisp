@@ -4,11 +4,11 @@
                 :is
                 :fail)
   (:import-from :fastech
-                :parse-error
-                :parse-error-remainder
-                :parse-error-message)
+                :parse-failed
+                :parse-failed-remainder
+                :parse-failed-message)
   (:export :is-parsed
-           :is-parse-error))
+           :is-parse-failed))
 (in-package :fastech.test-helper)
 
 (defun is-parsed (parser input expected-value expected-remainder message)
@@ -18,10 +18,10 @@
         (list expected-value expected-remainder)
         message)))
 
-(defun is-parse-error (parser input expected-remainder expected-message message)
+(defun is-parse-failed (parser input expected-remainder expected-message message)
   (handler-case (fastech:parse parser input)
-    (parse-error (e)
-      (is (list (parse-error-remainder e) (parse-error-message e))
+    (parse-failed (e)
+      (is (list (parse-failed-remainder e) (parse-failed-message e))
           (list expected-remainder expected-message)
           message))
     (:no-error (value remainder)
