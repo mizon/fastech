@@ -24,7 +24,7 @@
       (funcall parser i p #'sf1 #'ff1))))
 
 (defun choice (parser &rest parsers)
-  "Tries applying `parsers' in order. When the inner parser succeeds, halts and uses the value of the succeeding parser."
+  "Tries applying `parsers' in order. When the inner parser succeeds, halts and uses the result of the succeeding parser."
   (reduce (lambda (l r)
             (or-parser l r))
           (cons parser parsers)))
@@ -34,11 +34,11 @@
   (or-parser parser (always nil)))
 
 (defun many (parser)
-  "Applies `parser' many times until parser fails. The list of parser values is this parser's value."
+  "Applies `parser' many times until `parser' fails. The list of parser results is this parser's result."
   (or-parser (many1 parser) (always ())))
 
 (defun many1 (parser)
-  "Applies `parser' many times as well as many but only succeeds when parser succeeds more once."
+  "Applies `parser' many times as well as `many' but only succeeds when `parser' succeeds more once."
   (bind
    parser
    (lambda (v)
@@ -55,14 +55,14 @@
       (funcall left i p sf #'ff1))))
 
 (defun *> (parser &rest parsers)
-  "Applies `parsers' in order and keeps the value of the last parser."
+  "Applies `parsers' in order and keeps the result of the last parser."
   (reduce (lambda (l r)
             (bind l (constantly r)))
           parsers
           :initial-value parser))
 
 (defun <* (parser &rest parsers)
-  "Applies `parsers' in order and keeps the value of the first parser."
+  "Applies `parsers' in order and keeps the result of the first parser."
   (bind
    parser
    (lambda (v)

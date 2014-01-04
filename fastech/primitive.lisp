@@ -12,7 +12,7 @@
 (in-package :fastech.primitive)
 
 (defun parse (parser input)
-  "Runs `parser' with input. Throws `parse-error' when `parser' fails."
+  "Runs `parser' with `input'. Throws `parse-error' when `parser' fails."
   (funcall parser input 0 #'success-fn #'failure-fn))
 
 (defun always (value)

@@ -37,7 +37,7 @@
           (funcall ff i p "str"))))))
 
 (defun satisfy (pred)
-  "Parses a character if `pred' returns non-nil, pred takes a head character of the current input."
+  "Parses a character if `pred' returns non-nil, `pred' takes a head character of the current input."
   (bind
    (ensure 1)
    (constantly
