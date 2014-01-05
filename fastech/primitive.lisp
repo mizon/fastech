@@ -39,7 +39,7 @@
 
 (declaim (inline map-result))
 (defun map-result (f parser)
-  "Applies `f' to the result of `parser'. The value `f' returns becomes the mapped parser's result."
+  "Applies `f' to the result of `parser'. The value `f' returns becomes mapped parser's result."
   (lambda (i p sf ff)
     (flet ((sf1 (i p v)
              (funcall sf i p (funcall f v))))
