@@ -9,7 +9,7 @@
            :parse-failed
            :parse-failed-remainder
            :parse-failed-message
-           :map-parser
+           :map-result
            :try
 
            :bind-parsers
