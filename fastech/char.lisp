@@ -56,6 +56,7 @@
           (funcall sf i (1+ p) (aref i p))
           (funcall ff i p "satisfy"))))))
 
+(declaim (inline take-while))
 (defun take-while (pred)
   "Parses characters while `pred' returns non-nil, and the result is a string. This parser is very faster than `(many (satisfy pred))'."
   (lambda (i p sf ff)
