@@ -25,5 +25,6 @@
            :any-char
            :str
            :satisfy
-           :take-while))
+           :take-while
+           :take-while1))
 (in-package :fastech)

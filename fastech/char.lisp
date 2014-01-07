@@ -5,12 +5,16 @@
                 :for
                 :leave)
   (:import-from :fastech.primitive
-                :bind)
+                :bind
+                :always)
+  (:import-from :fastech.combinators
+                :choice)
   (:export :chr
            :any-char
            :str
            :satisfy
-           :take-while))
+           :take-while
+           :take-while1))
 (in-package :fastech.char)
 
 (declaim (inline chr))
@@ -59,6 +63,11 @@
 (declaim (inline take-while))
 (defun take-while (pred)
   "Parses characters while `pred' returns non-nil, and the result is a string. This parser is very faster than `(many (satisfy pred))'."
+  (choice (take-while1 pred) (always "")))
+
+(declaim (inline take-while1))
+(defun take-while1 (pred)
+  "Same as `take-while' except that `take-while' fails if no characters were consumed."
   (lambda (i p sf ff)
     (declare (ignore ff))
     (let* ((l (length i))
@@ -67,7 +76,9 @@
                              (leave idx))
                             ((not (funcall pred (aref i idx)))
                              (leave idx))))))
-      (funcall sf i end (subseq i p end)))))
+      (if (= p end)
+          (funcall ff i p "take-while1")
+          (funcall sf i end (subseq i p end))))))
 
 ;; Helper
 (declaim (inline ensure))
