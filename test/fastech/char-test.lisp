@@ -7,13 +7,14 @@
                 :chr
                 :any-char
                 :str
-                :satisfy)
+                :satisfy
+                :take-while)
   (:import-from :fastech.test-helper
                 :is-parsed
                 :is-parse-failed))
 (in-package :fastech.char-test)
 
-(plan 9)
+(plan 13)
 
 (diag "chr")
 (is-parsed (chr #\a) "abc"
@@ -51,5 +52,19 @@
   (is-parse-failed (satisfy #'pred) "bac"
                    "bac" "satisfy"
                    "fails parsing the unsatisfied char"))
+
+(diag "take-while")
+(is-parsed (take-while (lambda (c) (eq c #\a))) "aaabc"
+           "aaa" "bc"
+           "parses characters while `pred' returns non-nil")
+(is-parsed (take-while (lambda (c) (eq c #\b))) "aaabc"
+           "" "aaabc"
+           "doesn't advance input position but succeeds")
+(is-parsed (take-while (lambda (c) (eq c #\b))) ""
+           "" ""
+           "succeeds with empty inputs")
+(is-parsed (take-while (constantly t)) "foobar"
+           "foobar" ""
+           "parses the whole input")
 
 (finalize)
