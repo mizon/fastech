@@ -1,11 +1,16 @@
 (defpackage :fastech.char
   (:use :cl)
+  (:import-from :iterate
+                :iter
+                :for
+                :leave)
   (:import-from :fastech.primitive
                 :bind)
   (:export :chr
            :any-char
            :str
-           :satisfy))
+           :satisfy
+           :take-while))
 (in-package :fastech.char)
 
 (defun chr (char)
@@ -24,6 +29,7 @@
    (ensure 1)
    (constantly
     (lambda (i p sf ff)
+      (declare (ignore ff))
       (funcall sf i (1+ p) (char i p))))))
 
 (defun str (string)
@@ -45,6 +51,18 @@
       (if (funcall pred (aref i p))
           (funcall sf i (1+ p) (aref i p))
           (funcall ff i p "satisfy"))))))
+
+(defun take-while (pred)
+  "Parses characters while `pred' returns non-nil, and the result is a string. This parser is very faster than `(many (satisfy pred))'."
+  (lambda (i p sf ff)
+    (declare (ignore ff))
+    (let* ((l (length i))
+           (end (iter (for idx upfrom p)
+                      (cond ((= idx l)
+                             (leave idx))
+                            ((not (funcall pred (aref i idx)))
+                             (leave idx))))))
+      (funcall sf i end (subseq i p end)))))
 
 ;; Helper
 (defun ensure (length)

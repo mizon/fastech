@@ -16,7 +16,8 @@
                 :depends-on ("fastech/primitive"))
                (:file "fastech/char"
                 :depends-on ("fastech/combinators"))
-               (:file "fastech/primitive")))
+               (:file "fastech/primitive"))
+  :depends-on (:iterate))
 
 (defsystem :fastech-test
   :license "BSD3"
