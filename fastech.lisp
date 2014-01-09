@@ -26,5 +26,6 @@
            :str
            :satisfy
            :take-while
-           :take-while1))
+           :take-while1
+           :take-till))
 (in-package :fastech)

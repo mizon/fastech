@@ -9,13 +9,14 @@
                 :str
                 :satisfy
                 :take-while
-                :take-while1)
+                :take-while1
+                :take-till)
   (:import-from :fastech.test-helper
                 :is-parsed
                 :is-parse-failed))
 (in-package :fastech.char-test)
 
-(plan 15)
+(plan 16)
 
 (diag "chr")
 (is-parsed (chr #\a) "abc"
@@ -75,5 +76,10 @@
 (is-parse-failed (take-while1 (lambda (c) (eq c #\a))) "bcd"
                  "bcd" "take-while1"
                  "fails if it couldn't consume any inputs")
+
+(diag "take-till")
+(is-parsed (take-till (lambda (c) (eq c #\b))) "aaab"
+           "aaa" "b"
+           "parses characters till `pred' returns non-nil")
 
 (finalize)

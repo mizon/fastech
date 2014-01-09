@@ -14,7 +14,8 @@
            :str
            :satisfy
            :take-while
-           :take-while1))
+           :take-while1
+           :take-till))
 (in-package :fastech.char)
 
 (declaim (inline chr))
@@ -62,7 +63,7 @@
 
 (declaim (inline take-while))
 (defun take-while (pred)
-  "Parses characters while `pred' returns non-nil, and the result is a string. This parser is very faster than `(many (satisfy pred))'."
+  "Parses characters while `pred' returns non-nil, and the result is the string. This parser is very faster than `(many (satisfy pred))'."
   (choice (take-while1 pred) (always "")))
 
 (declaim (inline take-while1))
@@ -79,6 +80,12 @@
       (if (= p end)
           (funcall ff i p "take-while1")
           (funcall sf i end (subseq i p end))))))
+
+(declaim (inline take-till))
+(defun take-till (pred)
+  "Parses characters till `pred' returns non-nil, and the result is the string."
+  (take-while (lambda (c)
+                (not (funcall pred c)))))
 
 ;; Helper
 (declaim (inline ensure))
