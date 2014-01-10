@@ -60,7 +60,7 @@ Limitation
 ----------
 Fastech now be tested with SBCL and Clozure CL only. I will support other Lisp implementations in the future.
 
-For Performance
+For performance
 ---------------
 For writing efficient parsers, prefer to use string specific parsers like `fastech:str`, `fastech:take-while`, `fastech:take-till`, and the others. These parsers are truly faster than composed character specific parsers like `(fastech:many (fastech:any-char))`.
 
