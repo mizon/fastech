@@ -31,7 +31,7 @@ Usage
 -----
 At first, whole APIs Fastech provides are exported from `fastech` package. Import them as needed.
 
-### Runnig parser
+### Running parsers
 Use `fastech:parse` and `fastech:parse-once` to run your parser. `parse` is used for incremental parsing, so `parse` may be convenient for daily use. For example:
 
     > (fastech:parse-once (fastech:str "foo") "foobar") ;;=> "foo" "bar"
@@ -60,8 +60,8 @@ Limitation
 ----------
 Fastech now be tested with SBCL and Clozure CL only. I will support other Lisp implementations in the future.
 
-For performance
----------------
+Performance considerations
+--------------------------
 For writing efficient parsers, prefer to use string specific parsers like `fastech:str`, `fastech:take-while`, `fastech:take-till`, and the others. These parsers are truly faster than composed character specific parsers like `(fastech:many (fastech:any-char))`.
 
 License
