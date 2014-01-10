@@ -11,6 +11,7 @@
            :parse-failed-message
            :map-result
            :try
+           :take-remainder
 
            :bind-parsers
            :not-followed-by

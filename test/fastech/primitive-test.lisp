@@ -8,13 +8,16 @@
                 :map-result
                 :try
                 :str
-                :parse-failed-remainder)
+                :parse-failed-remainder
+                :take-remainder)
+  (:import-from :fastech.combinators
+                :*>)
   (:import-from :fastech.test-helper
                 :is-parsed
                 :is-parse-failed))
 (in-package :fastech.primitive-test)
 
-(plan 6)
+(plan 8)
 
 (diag "unexpected")
 (is-parse-failed (fastech:unexpected "message") "foobar"
@@ -49,5 +52,13 @@
                  "foofoo"
                  "foofoo" "str"
                  "parses a fragment but keeps the remainder")
+
+(diag "take-remainder")
+(is-parsed (take-remainder) "foobar"
+           "foobar" ""
+           "consumes the whole input")
+(is-parsed (*> (str "foo") (take-remainder)) "foobar"
+           "bar" ""
+           "consumes the remaining input")
 
 (finalize)

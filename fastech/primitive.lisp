@@ -6,6 +6,7 @@
            :bind
            :map-result
            :try
+           :take-remainder
            :parse-failed
            :parse-failed-remainder
            :parse-failed-message))
@@ -53,6 +54,12 @@
              (declare (ignore i1 p1))
              (funcall ff i p message)))
       (funcall parser i p sf #'ff1))))
+
+(declaim (inline take-remainder))
+(defun take-remainder ()
+  "Consumes the whole remaining input."
+  (lambda (i p sf ff)
+    (funcall sf i (length i) (subseq i p))))
 
 ;; Default success function
 (defun success-fn (input pos value)
