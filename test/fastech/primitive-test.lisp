@@ -10,7 +10,7 @@
                 :str
                 :parse-failed-remainder
                 :take-remainder)
-  (:import-from :fastech.combinators
+  (:import-from :fastech.combinator
                 :*>)
   (:import-from :fastech.test-helper
                 :is-parsed

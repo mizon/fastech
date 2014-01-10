@@ -1,4 +1,4 @@
-(defpackage :fastech.combinators
+(defpackage :fastech.combinator
   (:use :cl)
   (:import-from :fastech.primitive
                 :always
@@ -10,7 +10,7 @@
            :many1
            :*>
            :<*))
-(in-package :fastech.combinators)
+(in-package :fastech.combinator)
 
 (declaim (inline not-followed-by))
 (defun not-followed-by (parser)

@@ -1,7 +1,7 @@
 (defpackage :fastech
   (:use :cl
         :fastech.primitive
-        :fastech.combinators
+        :fastech.combinator
         :fastech.char)
   (:export :parse
            :always

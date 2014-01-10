@@ -1,4 +1,4 @@
-(defpackage :fastech.combinators-test
+(defpackage :fastech.combinator-test
   (:use :cl
         :cl-test-more)
   (:import-from :fastech
@@ -17,7 +17,7 @@
   (:import-from :fastech.test-helper
                 :is-parsed
                 :is-parse-failed))
-(in-package :fastech.combinators-test)
+(in-package :fastech.combinator-test)
 
 (plan 14)
 

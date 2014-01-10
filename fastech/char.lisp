@@ -7,7 +7,7 @@
   (:import-from :fastech.primitive
                 :bind
                 :always)
-  (:import-from :fastech.combinators
+  (:import-from :fastech.combinator
                 :choice)
   (:export :chr
            :any-char

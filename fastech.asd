@@ -11,11 +11,11 @@
   :components ((:file "fastech"
                 :depends-on ("fastech/primitive"
                              "fastech/char"
-                             "fastech/combinators"))
-               (:file "fastech/combinators"
+                             "fastech/combinator"))
+               (:file "fastech/combinator"
                 :depends-on ("fastech/primitive"))
                (:file "fastech/char"
-                :depends-on ("fastech/combinators"))
+                :depends-on ("fastech/combinator"))
                (:file "fastech/primitive"))
   :depends-on (:iterate))
 
@@ -24,7 +24,7 @@
   :version "0.1"
   :author "Keita Mizuochi <mizon9@gmail.com>"
   :components ((:module "test/fastech"
-                :components ((:file "combinators-test"
+                :components ((:file "combinator-test"
                               :depends-on ("test-helper"))
                              (:file "char-test"
                               :depends-on ("test-helper"))
