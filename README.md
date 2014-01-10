@@ -1,11 +1,7 @@
 Fastech
 =======
-Warning
--------
-This project is in development now!
+WARNING: This project is in development now!
 
-About
------
 Fastech is a fast and pragmatic parser combinator library for Common Lisp.
 
 The concept and the implementation are inspired by [Attoparsec][].
