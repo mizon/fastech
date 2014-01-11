@@ -3,4 +3,5 @@ TODO
 * Support incremental inputs
 * Add parsers which Parsec supports
 * Make every parsers more efficient
+* Make error notification more pretty
 * Write README
