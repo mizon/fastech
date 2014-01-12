@@ -16,8 +16,11 @@
                 :depends-on ("fastech/primitive"))
                (:file "fastech/char"
                 :depends-on ("fastech/combinator"))
-               (:file "fastech/primitive"))
-  :depends-on (:iterate))
+               (:file "fastech/primitive")
+               (:file "fastech/experimental"
+                :depends-on ("fastech/primitive")))
+  :depends-on (:iterate
+               :optima))
 
 (defsystem :fastech-test
   :license "BSD3"
@@ -29,6 +32,8 @@
                              (:file "char-test"
                               :depends-on ("test-helper"))
                              (:file "primitive-test"
+                              :depends-on ("test-helper"))
+                             (:file "experimental-test"
                               :depends-on ("test-helper"))
                              (:file "test-helper"))))
   :depends-on (:cl-test-more
