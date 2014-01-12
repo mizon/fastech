@@ -42,10 +42,9 @@
 (declaim (inline map-result))
 (defun map-result (f parser)
   "Applies `f' to the result of `parser'. The value `f' returns becomes mapped parser's result."
-  (lambda (i p sf0 ff)
-    (flet ((sf1 (i p v)
-             (funcall sf0 i p (funcall f v))))
-      (funcall parser i p #'sf1 ff))))
+  (bind parser
+        (lambda (r)
+          (always (funcall f r)))))
 
 (declaim (inline try))
 (defun try (parser)
@@ -60,11 +59,12 @@
 (defun take-remainder ()
   "Consumes the whole remaining input."
   (lambda (i p sf ff)
+    (declare (ignore ff))
     (funcall sf i (length i) (subseq i p))))
 
 (declaim (inline alternative))
 (defun alternative (left right)
-  "Takes two parsers. Applies the first, and applies the second if the first failed"
+  "Takes two parsers. Applies the first, and applies the second if the first failed."
   (lambda (i p sf ff0)
     (flet ((ff1 (i p msg)
              (declare (ignore msg))
