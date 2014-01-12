@@ -2,7 +2,8 @@
   (:use :cl)
   (:import-from :fastech.primitive
                 :always
-                :bind)
+                :bind
+                :alternative)
   (:export :choice
            :optional
            :many
@@ -15,19 +16,19 @@
 (defun choice (parser &rest parsers)
   "Tries applying `parsers' in order. When the inner parser succeeds, halts and uses the result of the succeeding parser."
   (reduce (lambda (l r)
-            (or-parser l r))
+            (alternative l r))
           (cons parser parsers)))
 
 (declaim (inline optional))
 (defun optional (parser)
   "Tries to apply `parser'. Succeeds whether `parser' succeeds or not."
-  (or-parser parser (always nil)))
+  (alternative parser (always nil)))
 
 (declaim (inline many))
 (defun many (parser)
   "Applies `parser' many times until `parser' fails. The list of parser results is this parser's result."
   (labels ((many-p ()
-             (or-parser (many1-p) (always ())))
+             (alternative (many1-p) (always ())))
            (many1-p ()
              (bind
               parser
@@ -48,14 +49,6 @@
       (many parser)
       (lambda (vs)
         (always (cons v vs)))))))
-
-(declaim (inline or-parser))
-(defun or-parser (left right)
-  (lambda (i p sf ff0)
-    (flet ((ff1 (i p msg)
-             (declare (ignore msg))
-             (funcall right i p sf ff0)))
-      (funcall left i p sf #'ff1))))
 
 (declaim (inline *>))
 (defun *> (parser &rest parsers)

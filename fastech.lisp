@@ -12,6 +12,7 @@
            :map-result
            :try
            :take-remainder
+           :alternative
 
            :bind-parsers
            :choice

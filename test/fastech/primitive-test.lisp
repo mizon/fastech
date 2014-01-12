@@ -9,7 +9,8 @@
                 :try
                 :str
                 :parse-failed-remainder
-                :take-remainder)
+                :take-remainder
+                :alternative)
   (:import-from :fastech.combinator
                 :*>)
   (:import-from :fastech.test-helper
@@ -17,7 +18,7 @@
                 :is-parse-failed))
 (in-package :fastech.primitive-test)
 
-(plan 8)
+(plan 11)
 
 (diag "unexpected")
 (is-parse-failed (fastech:unexpected "message") "foobar"
@@ -60,5 +61,16 @@
 (is-parsed (*> (str "foo") (take-remainder)) "foobar"
            "bar" ""
            "consumes the remaining input")
+
+(diag "alternative")
+(is-parsed (alternative (str "foo") (str "bar")) "foobar"
+           "foo" "bar"
+           "applies the first parser")
+(is-parsed (alternative (str "foo") (str "bar")) "barfoo"
+           "bar" "foo"
+           "applies the second parser")
+(is-parse-failed (alternative (str "foo") (str "bar")) "noo"
+                 "noo" "str"
+                 "fails if the both parsers failed")
 
 (finalize)

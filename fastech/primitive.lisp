@@ -7,6 +7,7 @@
            :map-result
            :try
            :take-remainder
+           :alternative
            :parse-failed
            :parse-failed-remainder
            :parse-failed-message))
@@ -60,6 +61,15 @@
   "Consumes the whole remaining input."
   (lambda (i p sf ff)
     (funcall sf i (length i) (subseq i p))))
+
+(declaim (inline alternative))
+(defun alternative (left right)
+  "Takes two parsers. Applies the first, and applies the second if the first failed"
+  (lambda (i p sf ff0)
+    (flet ((ff1 (i p msg)
+             (declare (ignore msg))
+             (funcall right i p sf ff0)))
+      (funcall left i p sf #'ff1))))
 
 ;; Default success function
 (defun success-fn (input pos value)
