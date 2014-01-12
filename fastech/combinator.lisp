@@ -15,13 +15,13 @@
 (declaim (inline not-followed-by))
 (defun not-followed-by (parser)
   "Succeeds if `parser' fails. Fails if `parser' succeeds."
-  (lambda (i p sf ff)
+  (lambda (i p sf0 ff0)
     (flet ((sf1 (i1 p1 v)
              (declare (ignore i1 p1 v))
-             (funcall ff i p "not followed by"))
+             (funcall ff0 i p "not followed by"))
            (ff1 (i p msg)
              (declare (ignore msg))
-             (funcall sf i p nil)))
+             (funcall sf0 i p nil)))
       (funcall parser i p #'sf1 #'ff1))))
 
 (declaim (inline choice))
@@ -64,10 +64,10 @@
 
 (declaim (inline or-parser))
 (defun or-parser (left right)
-  (lambda (i p sf ff)
+  (lambda (i p sf ff0)
     (flet ((ff1 (i p msg)
              (declare (ignore msg))
-             (funcall right i p sf ff)))
+             (funcall right i p sf ff0)))
       (funcall left i p sf #'ff1))))
 
 (declaim (inline *>))

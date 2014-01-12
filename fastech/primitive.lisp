@@ -33,26 +33,26 @@
 (declaim (inline bind))
 (defun bind (parser f)
   "Binds a parser which `f' returns to `parser'. `f' takes the result of `parser'."
-  (lambda (i p sf ff)
+  (lambda (i p sf0 ff)
     (labels ((sf1 (i p v)
-               (funcall (funcall f v) i p sf ff)))
+               (funcall (funcall f v) i p sf0 ff)))
       (funcall parser i p #'sf1 ff))))
 
 (declaim (inline map-result))
 (defun map-result (f parser)
   "Applies `f' to the result of `parser'. The value `f' returns becomes mapped parser's result."
-  (lambda (i p sf ff)
+  (lambda (i p sf0 ff)
     (flet ((sf1 (i p v)
-             (funcall sf i p (funcall f v))))
+             (funcall sf0 i p (funcall f v))))
       (funcall parser i p #'sf1 ff))))
 
 (declaim (inline try))
 (defun try (parser)
   "Applies `parser'. Resets the input position when `parser' fails."
-  (lambda (i p sf ff)
+  (lambda (i p sf ff0)
     (flet ((ff1 (i1 p1 message)
              (declare (ignore i1 p1))
-             (funcall ff i p message)))
+             (funcall ff0 i p message)))
       (funcall parser i p sf #'ff1))))
 
 (declaim (inline take-remainder))
