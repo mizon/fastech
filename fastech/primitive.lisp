@@ -13,8 +13,8 @@
            :parse-failed-message
 
            ;; Internals
-           :get-input
-           :get-position))
+           :get-position
+           :with-context))
 (in-package :fastech.primitive)
 
 (defun parse (parser input)
@@ -90,13 +90,6 @@
 
 ;; Internals - Used by the fastech packages.
 
-(declaim (inline get-input))
-(defun get-input ()
-  "Internal"
-  (lambda (i p sf ff)
-    (declare (ignore ff))
-    (funcall sf i p i)))
-
 (declaim (inline get-position))
 (defun get-position ()
   "Internal"
@@ -110,3 +103,16 @@
   (lambda (i p sf ff)
     (declare (ignore p ff))
     (funcall sf i pos nil)))
+
+(defmacro with-context (arg-list &body body)
+  "Internal"
+  (let ((i (gensym))
+        (p (gensym))
+        (sf (gensym))
+        (ff (gensym)))
+    `(lambda (,i ,p ,sf ,ff)
+       (funcall (funcall (lambda ,arg-list ,@body) ,i ,p)
+                ,i
+                ,p
+                ,sf
+                ,ff))))

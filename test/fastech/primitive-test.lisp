@@ -73,11 +73,6 @@
                  "noo" "str"
                  "fails if the both parsers failed")
 
-(diag "get-input")
-(is-parsed (fastech.primitive:get-input) "foobar"
-           "foobar" "foobar"
-           "gets the input sequence")
-
 (diag "get-position")
 (is-parsed (fastech.primitive:get-position) "foobar"
            0 "foobar"
@@ -86,5 +81,11 @@
                (fastech.primitive:get-position))  "foobar"
            4 "ar"
            "sets the current position")
+
+(diag "with-context")
+(is-parsed (fastech.primitive:with-context (i p)
+             (always (list p i ))) "foobar"
+           (list 0 "foobar") "foobar"
+           "makes an arbitrary parser with the context")
 
 (finalize)

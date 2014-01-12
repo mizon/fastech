@@ -6,9 +6,14 @@
                 :leave)
   (:import-from :fastech.primitive
                 :bind
-                :always)
+                :always
+                :unexpected
+                :get-position
+                :get-input
+                :with-context)
   (:import-from :fastech.combinator
-                :choice)
+                :choice
+                :*>)
   (:export :chr
            :any-char
            :str
@@ -24,10 +29,11 @@
   (bind
    (ensure 1)
    (constantly
-    (lambda (i p sf ff)
+    (with-context (i p)
       (if (eq (char i p) char)
-          (funcall sf i (1+ p) (char i p))
-          (funcall ff i p "chr"))))))
+          (*> (setf (get-position) (1+ p))
+              (always (char i p)))
+          (unexpected "chr"))))))
 
 (declaim (inline any-char))
 (defun any-char ()
@@ -35,9 +41,9 @@
   (bind
    (ensure 1)
    (constantly
-    (lambda (i p sf ff)
-      (declare (ignore ff))
-      (funcall sf i (1+ p) (char i p))))))
+    (with-context (i p)
+      (*> (setf (get-position) (1+ p))
+          (always (char i p)))))))
 
 (declaim (inline str))
 (defun str (string)
@@ -45,10 +51,11 @@
   (bind
    (ensure (length string))
    (constantly
-    (lambda (i p sf ff)
+    (with-context (i p)
       (if (string= i string :start1 p :end1 (+ p (length string)))
-          (funcall sf i (+ p (length string)) string)
-          (funcall ff i p "str"))))))
+          (*> (setf (get-position) (+ p (length string)))
+              (always string))
+          (unexpected "str"))))))
 
 (declaim (inline satisfy))
 (defun satisfy (pred)
@@ -56,10 +63,11 @@
   (bind
    (ensure 1)
    (constantly
-    (lambda (i p sf ff)
+    (with-context (i p)
       (if (funcall pred (aref i p))
-          (funcall sf i (1+ p) (aref i p))
-          (funcall ff i p "satisfy"))))))
+          (*> (setf (get-position) (1+ p))
+              (always (aref i p)))
+          (unexpected "satisfy"))))))
 
 (declaim (inline take-while))
 (defun take-while (pred)
@@ -69,8 +77,7 @@
 (declaim (inline take-while1))
 (defun take-while1 (pred)
   "Same as `take-while' except that `take-while' fails if no characters were consumed."
-  (lambda (i p sf ff)
-    (declare (ignore ff))
+  (with-context (i p)
     (let* ((l (length i))
            (end (iter (for idx upfrom p)
                       (cond ((= idx l)
@@ -78,8 +85,9 @@
                             ((not (funcall pred (aref i idx)))
                              (leave idx))))))
       (if (= p end)
-          (funcall ff i p "take-while1")
-          (funcall sf i end (subseq i p end))))))
+          (unexpected "take-while1")
+          (*> (setf (get-position) end)
+              (always (subseq i p end)))))))
 
 (declaim (inline take-till))
 (defun take-till (pred)
@@ -90,7 +98,7 @@
 ;; Helper
 (declaim (inline ensure))
 (defun ensure (length)
-  (lambda (i p sf ff)
+  (with-context (i p)
     (if (< (- (length i) p) length)
-        (funcall ff i p "ensure: end of input")
-        (funcall sf i p nil))))
+        (unexpected "ensure: end of input")
+        (always nil))))
