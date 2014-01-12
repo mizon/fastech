@@ -9,7 +9,6 @@
                 :always
                 :unexpected
                 :get-position
-                :get-input
                 :with-context)
   (:import-from :fastech.combinator
                 :choice
