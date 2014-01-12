@@ -23,7 +23,7 @@ Clone this repository and load `fastech.asd`. After loading it, run the below co
 (asdf:load-system :fastech)
 ```
 
-You may get some errors about library dependence. If so, please install required libraries and retry the above command.
+You may get some errors about library dependence. If so, please install the required libraries and retry the above command.
 
 ## Usage
 
@@ -31,7 +31,7 @@ At first, whole APIs Fastech provides are exported from `fastech` package. Impor
 
 ### Running parsers
 
-Use `fastech:parse` and `fastech:parse-only` to run your parser. `parse` is used for incremental parsing, so `parse` may be convenient for daily use. For example:
+Use `fastech:parse` and `fastech:parse-only` to run your parser. `parse` is used for incremental parsing, so `parse-only` may be convenient for daily use. For example:
 
 ```common-lisp
 (fastech:parse-only (fastech:str "foo") "foobar")
@@ -56,12 +56,12 @@ Use `fastech:bind`, `fastech:*>` or `fastech:<*`.
 
 #### fastech:\*>, fastech:<\*
 
-`fastech:*>` and `fastech:<*` take more than one parsers and apply given parsers sequencially, but `*>` only keeps last parser's result and `<*` only keeps the first parser's result.
+`fastech:*>` and `fastech:<*` take more than one parsers and apply given parsers sequencially, but `*>` only keeps the last parser's result and `<*` only keeps the first parser's result.
 
 ```common-lisp
-(parse-only (*> (chr #\a) (chr #\b) (#\c)) "abc")
+(parse-only (*> (chr #\a) (chr #\b) (chr #\c)) "abc")
 ;=> "c"
-(parse-only (<* (chr #\a) (chr #\b) (#\c)) "abc")
+(parse-only (<* (chr #\a) (chr #\b) (chr #\c)) "abc")
 ;=> "a"
 ```
 
