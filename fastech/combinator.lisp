@@ -3,26 +3,13 @@
   (:import-from :fastech.primitive
                 :always
                 :bind)
-  (:export :not-followed-by
-           :choice
+  (:export :choice
            :optional
            :many
            :many1
            :*>
            :<*))
 (in-package :fastech.combinator)
-
-(declaim (inline not-followed-by))
-(defun not-followed-by (parser)
-  "Succeeds if `parser' fails. Fails if `parser' succeeds."
-  (lambda (i p sf0 ff0)
-    (flet ((sf1 (i1 p1 v)
-             (declare (ignore i1 p1 v))
-             (funcall ff0 i p "not followed by"))
-           (ff1 (i p msg)
-             (declare (ignore msg))
-             (funcall sf0 i p nil)))
-      (funcall parser i p #'sf1 #'ff1))))
 
 (declaim (inline choice))
 (defun choice (parser &rest parsers)

@@ -14,7 +14,6 @@
            :take-remainder
 
            :bind-parsers
-           :not-followed-by
            :choice
            :optional
            :many

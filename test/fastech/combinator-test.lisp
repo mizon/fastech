@@ -4,7 +4,6 @@
   (:import-from :fastech
                 :parse
                 :always
-                :not-followed-by
                 :choice
                 :optional
                 :parse-failed
@@ -19,20 +18,12 @@
                 :is-parse-failed))
 (in-package :fastech.combinator-test)
 
-(plan 14)
+(plan 12)
 
 (diag "always")
 (is-parsed (always :foo) "some string"
            :foo "some string"
            "makes an always parser")
-
-(diag "not-followed-by")
-(is-parsed (not-followed-by (str "foo")) "barfoo"
-           nil "barfoo"
-           "succeeds when the inner parser fails")
-(is-parse-failed (not-followed-by (always 100)) "foobar"
-                 "foobar" "not followed by"
-                 "failes when the inner parser succeeds")
 
 (diag "choice")
 (is-parsed (choice (always :foo) (always :foobar)) "foobar"
