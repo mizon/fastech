@@ -18,7 +18,7 @@
                 :is-parse-failed))
 (in-package :fastech.primitive-test)
 
-(plan 11)
+(plan 14)
 
 (diag "unexpected")
 (is-parse-failed (fastech:unexpected "message") "foobar"
@@ -72,5 +72,19 @@
 (is-parse-failed (alternative (str "foo") (str "bar")) "noo"
                  "noo" "str"
                  "fails if the both parsers failed")
+
+(diag "get-input")
+(is-parsed (fastech.primitive:get-input) "foobar"
+           "foobar" "foobar"
+           "gets the input sequence")
+
+(diag "get-position")
+(is-parsed (fastech.primitive:get-position) "foobar"
+           0 "foobar"
+           "gets the current position")
+(is-parsed (*> (setf (fastech.primitive:get-position) 4)
+               (fastech.primitive:get-position))  "foobar"
+           4 "ar"
+           "sets the current position")
 
 (finalize)

@@ -10,7 +10,11 @@
            :alternative
            :parse-failed
            :parse-failed-remainder
-           :parse-failed-message))
+           :parse-failed-message
+
+           ;; Internals
+           :get-input
+           :get-position))
 (in-package :fastech.primitive)
 
 (defun parse (parser input)
@@ -83,3 +87,26 @@
   ((remainder :initarg :remainder :reader parse-failed-remainder)
    (message :initarg :message :reader parse-failed-message))
   (:documentation "A condition used when failed to parse."))
+
+;; Internals - Used by the fastech packages.
+
+(declaim (inline get-input))
+(defun get-input ()
+  "Internal"
+  (lambda (i p sf ff)
+    (declare (ignore ff))
+    (funcall sf i p i)))
+
+(declaim (inline get-position))
+(defun get-position ()
+  "Internal"
+  (lambda (i p sf ff)
+    (declare (ignore ff))
+    (funcall sf i p p)))
+
+(declaim (inline (setf get-position)))
+(defun (setf get-position) (pos)
+  "Internal"
+  (lambda (i p sf ff)
+    (declare (ignore p ff))
+    (funcall sf i pos nil)))
