@@ -4,9 +4,9 @@ WARNING: This project is in development now!
 
 Fastech is a fast and pragmatic parser combinator library for Common Lisp.
 
-The concept and the implementation are inspired by [Attoparsec][].
+The concept and the implementation are inspired by [attoparsec][].
 
-[Attoparsec]: https://github.com/bos/attoparsec
+[attoparsec]: https://github.com/bos/attoparsec
 
 ## Features
 
@@ -14,6 +14,7 @@ The concept and the implementation are inspired by [Attoparsec][].
 * Includes string specific efficient parsers like `take-while`
 * [TODO] Includes high level useful combinators
 * [TODO] Supports incremental inputs which is useful to parse streams
+* [EXPERIMENTAL] Provides a macro for composing parsers easily
 
 ## Installation
 
@@ -79,6 +80,29 @@ However, take care of using `try` because it may make your parser slowly.
 ## For performance
 
 For writing efficient parsers, prefer to use string specific parsers like `fastech:str`, `fastech:take-while`, `fastech:take-till`, and the others. These parsers are truly faster than composed character specific parsers like `(fastech:many (fastech:any-char))`.
+
+## (Experimental) parser macro
+
+It is sometimes tiresome to compose parsers by `bind`, so Fastech provides a shortcut macro `parser`. This is an experimental feature, and it is exported from `fastech.experimental`.
+
+```common-lisp
+(import 'fastech.experimental:parser)
+(parse (parser
+        (:bind foo (str "foo"))
+        (:let foobar (list foo "bar"))
+        (always foobar))
+       "foobar")
+;=> ("foo" "bar")
+(parse (parser
+        (:bind c (any-char))
+        (if (eq c #\A)
+            (always "It is A.")
+            (unexpected "It isn't A.")))
+       "ABC")
+;=> "It is A."
+```
+
+For more information, please see the source code documentation.
 
 ## Limitation
 

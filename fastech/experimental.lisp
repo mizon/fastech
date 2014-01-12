@@ -6,7 +6,7 @@
 (in-package :fastech.experimental)
 
 (defmacro parser (clause &body clauses)
-  "[EXPERIMENTAL] A macro making easy to write complicated parsers.
+  "[EXPERIMENTAL] A macro makes easy to write complicated parsers.
 
 Syntax:
     parser {clause}* parser-expression
