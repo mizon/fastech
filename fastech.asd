@@ -13,7 +13,8 @@
                              "fastech/char"
                              "fastech/combinator"))
                (:file "fastech/combinator"
-                :depends-on ("fastech/primitive"))
+                :depends-on ("fastech/primitive"
+                             "fastech/experimental"))
                (:file "fastech/char"
                 :depends-on ("fastech/combinator"))
                (:file "fastech/primitive")

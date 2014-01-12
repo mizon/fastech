@@ -25,48 +25,40 @@
 (declaim (inline chr))
 (defun chr (char)
   "Parses a character."
-  (bind
-   (ensure 1)
-   (constantly
-    (with-context (i p)
-      (if (eq (char i p) char)
-          (*> (setf (get-position) (1+ p))
-              (always (char i p)))
-          (unexpected "chr"))))))
+  (*> (ensure 1)
+      (with-context (i p)
+        (if (eq (char i p) char)
+            (*> (setf (get-position) (1+ p))
+                (always (char i p)))
+            (unexpected "chr")))))
 
 (declaim (inline any-char))
 (defun any-char ()
   "Parses an arbitrary character."
-  (bind
-   (ensure 1)
-   (constantly
-    (with-context (i p)
-      (*> (setf (get-position) (1+ p))
-          (always (char i p)))))))
+  (*> (ensure 1)
+      (with-context (i p)
+        (*> (setf (get-position) (1+ p))
+            (always (char i p))))))
 
 (declaim (inline str))
 (defun str (string)
   "Parses a string."
-  (bind
-   (ensure (length string))
-   (constantly
-    (with-context (i p)
-      (if (string= i string :start1 p :end1 (+ p (length string)))
-          (*> (setf (get-position) (+ p (length string)))
-              (always string))
-          (unexpected "str"))))))
+  (*> (ensure (length string))
+      (with-context (i p)
+        (if (string= i string :start1 p :end1 (+ p (length string)))
+            (*> (setf (get-position) (+ p (length string)))
+                (always string))
+            (unexpected "str")))))
 
 (declaim (inline satisfy))
 (defun satisfy (pred)
   "Parses a character if `pred' returns non-nil, `pred' takes a head character of the current input."
-  (bind
-   (ensure 1)
-   (constantly
-    (with-context (i p)
-      (if (funcall pred (aref i p))
-          (*> (setf (get-position) (1+ p))
-              (always (aref i p)))
-          (unexpected "satisfy"))))))
+  (*> (ensure 1)
+      (with-context (i p)
+        (if (funcall pred (aref i p))
+            (*> (setf (get-position) (1+ p))
+                (always (aref i p)))
+            (unexpected "satisfy")))))
 
 (declaim (inline take-while))
 (defun take-while (pred)

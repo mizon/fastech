@@ -4,6 +4,8 @@
                 :always
                 :bind
                 :alternative)
+  (:import-from :fastech.experimental
+                :parser)
   (:export :choice
            :optional
            :many
@@ -30,25 +32,19 @@
   (labels ((many-p ()
              (alternative (many1-p) (always ())))
            (many1-p ()
-             (bind
-              parser
-              (lambda (v)
-                (bind
-                 (many-p)
-                 (lambda (vs)
-                   (always (cons v vs))))))))
+             (parser
+              (:bind v parser)
+              (:bind vs (many-p))
+              (always (cons v vs)))))
     (many-p)))
 
 (declaim (inline many1))
 (defun many1 (parser)
   "Applies `parser' many times as well as `many' but only succeeds when `parser' succeeds more once."
-  (bind
-   parser
-   (lambda (v)
-     (bind
-      (many parser)
-      (lambda (vs)
-        (always (cons v vs)))))))
+  (parser
+   (:bind v parser)
+   (:bind vs (many parser))
+   (always (cons v vs))))
 
 (declaim (inline *>))
 (defun *> (parser &rest parsers)
@@ -61,7 +57,7 @@
 (declaim (inline <*))
 (defun <* (parser &rest parsers)
   "Applies `parsers' in order and keeps the result of the first parser."
-  (bind
-   parser
-   (lambda (v)
-     (*> (apply #'*> parsers) (always v)))))
+  (parser
+   (:bind v parser)
+   (apply #'*> parsers)
+   (always v)))
