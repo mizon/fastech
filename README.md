@@ -83,7 +83,7 @@ For writing efficient parsers, prefer to use string specific parsers like `faste
 
 ## (Experimental) parser macro
 
-It is sometimes tiresome to compose parsers by `bind`, so Fastech provides a shortcut macro `parser`. This is an experimental feature, and it is exported from `fastech.experimental`.
+It is sometimes tiresome to compose parsers by `bind`, so Fastech provides a shortcut macro `parser`. This is an experimental feature and be exported from `fastech.experimental`.
 
 ```common-lisp
 (import 'fastech.experimental:parser)
