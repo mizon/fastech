@@ -17,31 +17,34 @@
            :with-context))
 (in-package :fastech.primitive)
 
+(defvar *input* nil)
+
 (defun parse (parser input)
   "Runs `parser' with `input'. Throws `parse-failed' when `parser' fails."
-  (funcall parser input 0 #'success-fn #'failure-fn))
+  (let ((*input* input))
+    (funcall parser 0 #'success-fn #'failure-fn)))
 
 (declaim (inline always))
 (defun always (value)
   "Succeeds always. `value' is this parser's result."
-  (lambda (i p sf ff)
+  (lambda (p sf ff)
     (declare (ignore ff))
-    (funcall sf i p value)))
+    (funcall sf p value)))
 
 (declaim (inline unexpected))
 (defun unexpected (message)
   "Fails always. The parse error message is `message'."
-  (lambda (i p sf ff)
+  (lambda (p sf ff)
     (declare (ignore sf))
-    (funcall ff i p message)))
+    (funcall ff p message)))
 
 (declaim (inline bind))
 (defun bind (parser f)
   "Binds a parser which `f' returns to `parser'. `f' takes the result of `parser'."
-  (lambda (i p sf0 ff)
-    (labels ((sf1 (i p v)
-               (funcall (funcall f v) i p sf0 ff)))
-      (funcall parser i p #'sf1 ff))))
+  (lambda (p sf0 ff)
+    (labels ((sf1 (p v)
+               (funcall (funcall f v) p sf0 ff)))
+      (funcall parser p #'sf1 ff))))
 
 (declaim (inline map-result))
 (defun map-result (f parser)
@@ -53,66 +56,64 @@
 (declaim (inline try))
 (defun try (parser)
   "Applies `parser'. Resets the input position when `parser' fails."
-  (lambda (i p sf ff0)
-    (flet ((ff1 (i1 p1 message)
-             (declare (ignore i1 p1))
-             (funcall ff0 i p message)))
-      (funcall parser i p sf #'ff1))))
+  (lambda (p sf ff0)
+    (flet ((ff1 (p1 message)
+             (declare (ignore p1))
+             (funcall ff0 p message)))
+      (funcall parser p sf #'ff1))))
 
 (declaim (inline take-remainder))
 (defun take-remainder ()
   "Consumes the whole remaining input."
-  (lambda (i p sf ff)
+  (lambda (p sf ff)
     (declare (ignore ff))
-    (funcall sf i (length i) (subseq i p))))
+    (funcall sf (length *input*) (subseq *input* p))))
 
 (declaim (inline alternative))
 (defun alternative (left right)
   "Takes two parsers. Applies the first, and applies the second if the first failed."
-  (lambda (i p sf ff0)
-    (flet ((ff1 (i p msg)
+  (lambda (p sf ff0)
+    (flet ((ff1 (p msg)
              (declare (ignore msg))
-             (funcall right i p sf ff0)))
-      (funcall left i p sf #'ff1))))
+             (funcall right p sf ff0)))
+      (funcall left p sf #'ff1))))
 
 ;; Default success function
-(defun success-fn (input pos value)
-  (values value (subseq input pos)))
+(defun success-fn (pos value)
+  (values value (subseq *input* pos)))
 
 ;; Default failure function
-(defun failure-fn (input pos message)
-  (error 'parse-failed :remainder (subseq input pos) :message message))
+(defun failure-fn (pos message)
+  (error 'parse-failed :remainder (subseq *input* pos) :message message))
 
 (define-condition parse-failed ()
   ((remainder :initarg :remainder :reader parse-failed-remainder)
    (message :initarg :message :reader parse-failed-message))
   (:documentation "A condition used when failed to parse."))
 
-;; Internals - Used by the fastech packages.
+;;; Internals - Used by the fastech packages.
 
 (declaim (inline get-position))
 (defun get-position ()
   "Internal"
-  (lambda (i p sf ff)
+  (lambda (p sf ff)
     (declare (ignore ff))
-    (funcall sf i p p)))
+    (funcall sf p p)))
 
 (declaim (inline (setf get-position)))
 (defun (setf get-position) (pos)
   "Internal"
-  (lambda (i p sf ff)
+  (lambda (p sf ff)
     (declare (ignore p ff))
-    (funcall sf i pos nil)))
+    (funcall sf pos nil)))
 
 (defmacro with-context (arg-list &body body)
   "Internal"
-  (let ((i (gensym))
-        (p (gensym))
-        (sf (gensym))
-        (ff (gensym)))
-    `(lambda (,i ,p ,sf ,ff)
-       (funcall (funcall (lambda ,arg-list ,@body) ,i ,p)
-                ,i
+  (let ((p (gensym "P"))
+        (sf (gensym "SF"))
+        (ff (gensym "FF")))
+    `(lambda (,p ,sf ,ff)
+       (funcall ((lambda ,arg-list ,@body) *input* ,p)
                 ,p
                 ,sf
                 ,ff))))
