@@ -70,5 +70,8 @@
 (is-parsed (<* (str "foo") (str "bar") (str "noo")) "foobarnoo"
            "foo" ""
            "keeps the first result")
+(is-parsed (<* (str "foo")) "foo"
+           "foo" ""
+           "takes single parser")
 
 (finalize)

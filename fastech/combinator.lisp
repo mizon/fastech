@@ -57,7 +57,12 @@
 (declaim (inline <*))
 (defun <* (parser &rest parsers)
   "Applies `parsers' in order and keeps the result of the first parser."
-  (parser
-   (:bind v parser)
-   (apply #'*> parsers)
-   (always v)))
+  (if parsers
+      (parser
+       (:bind v parser)
+       (reduce (lambda (l r)
+                 (bind l (constantly r)))
+               (cdr parsers)
+               :initial-value (car parsers))
+       (always v))
+      parser))
