@@ -13,13 +13,13 @@
 
 (defun is-parsed (parser input expected-value expected-remainder message)
   (multiple-value-bind (value remainder)
-      (fastech:parse parser input)
+      (fastech:parse-only parser input)
     (is (list value remainder)
         (list expected-value expected-remainder)
         message)))
 
 (defun is-parse-failed (parser input expected-remainder expected-message message)
-  (handler-case (fastech:parse parser input)
+  (handler-case (fastech:parse-only parser input)
     (parse-failed (e)
       (is (list (parse-failed-remainder e) (parse-failed-message e))
           (list expected-remainder expected-message)

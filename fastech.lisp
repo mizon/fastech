@@ -4,6 +4,7 @@
         :fastech.combinator
         :fastech.char)
   (:export :parse
+           :parse-only
            :always
            :unexpected
            :parse-failed

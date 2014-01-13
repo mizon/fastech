@@ -1,6 +1,7 @@
 (defpackage :fastech.primitive
   (:use :cl)
   (:export :parse
+           :parse-only
            :always
            :unexpected
            :bind
@@ -18,8 +19,15 @@
 (in-package :fastech.primitive)
 
 (defvar *input* nil)
+(defvar *more* nil)
 
 (defun parse (parser input)
+  "Runs `parser' with `input'. Throws `parse-failed' when `parser' fails."
+  (let ((*input* input)
+        (*more* t))
+    (funcall parser 0 #'success-fn #'failure-fn)))
+
+(defun parse-only (parser input)
   "Runs `parser' with `input'. Throws `parse-failed' when `parser' fails."
   (let ((*input* input))
     (funcall parser 0 #'success-fn #'failure-fn)))
